@@ -153,13 +153,10 @@ func (r *Route) Name(name string) *Route {
 }
 
 func (r *Route) Params(key string, value interface{}) *Route {
-	if r.params[key] != "" {
-		r.err = fmt.Errorf("mux: route params already has key %q, can't set %q",
-			key, value)
+	if r.params==nil{
+		r.params=make(map[string] interface{})
 	}
-	if r.err == nil {
-		r.params[key] = value
-	}
+	r.params[key] = value
 	return r
 }
 
@@ -168,7 +165,7 @@ func (r *Route) GetName() string {
 	return r.name
 }
 
-func (r *Route) getParams(key string) interface{} {
+func (r *Route) GetParams(key string) interface{} {
 	return r.params[key]
 }
 
