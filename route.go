@@ -166,6 +166,9 @@ func (r *Route) GetName() string {
 }
 
 func (r *Route) GetParams(key string) interface{} {
+	if r.params==nil{
+		return nil
+	}
 	return r.params[key]
 }
 
