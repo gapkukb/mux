@@ -41,6 +41,8 @@ type Route struct {
 	err error
 
 	buildVarsFunc BuildVarsFunc
+
+	params map[string]interface{}
 }
 
 // SkipClean reports whether path cleaning is enabled for this route via
@@ -150,9 +152,24 @@ func (r *Route) Name(name string) *Route {
 	return r
 }
 
+func (r *Route) Params(key string, value interface{}) *Route {
+	if r.params[key] != "" {
+		r.err = fmt.Errorf("mux: route params already has key %q, can't set %q",
+			key, value)
+	}
+	if r.err == nil {
+		r.params[key] = value
+	}
+	return r
+}
+
 // GetName returns the name for the route, if any.
 func (r *Route) GetName() string {
 	return r.name
+}
+
+func (r *Route) getParams(key string) interface{} {
+	return r.params[key]
 }
 
 // ----------------------------------------------------------------------------
